@@ -142,11 +142,14 @@ function pzDiv(pz) {
 
 function renderResults(pzs) {
 	const div = document.getElementById('results');
-	if (pzs.length == 0) {
-		const p = document.createElement('p');
-		p.textContent = '没有达标配装！'
-		div.appendChild(p);
+	const len = pzs.length;
+	const p = document.createElement('p');
+	if (len == 0) {
+		p.textContent = '魔盒中没有达标配装！';
+	} else {
+		p.textContent = `找到 ${len} 个符合要求的配装`;
 	}
+	div.appendChild(p);
 	pzs.forEach((pz) => div.appendChild(pzDiv(pz)));
 }
 
