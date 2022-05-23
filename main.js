@@ -63,7 +63,11 @@ function getAttrFromPZ(pz, attr) {
 function meetsRequirement(pz, requirement) {
 	return Object.entries(requirement).every(
 		([attr, val]) => {
-			return getAttrFromPZ(pz, attr) >= val;
+			if (attr == 'score') {
+				return pz['overview']['score'] <= val;
+			} else {
+				return getAttrFromPZ(pz, attr) >= val;
+			}
 		}
 	);
 }
