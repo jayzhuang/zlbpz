@@ -1,0 +1,164 @@
+<!doctype html>
+
+<html>
+<title>猪老板配装搜索器</title>
+
+<body class="container">
+	<h2>猪老板配装搜索器</h2>
+	<p>
+		目前只支持缘起DPS，所有配装均出自<a href="https://origin.jx3box.com/pz">魔盒配装器</a>
+	</p>
+
+	<div id="mount-wrapper">
+		<h4>心法</h4>
+		<select id="mount">
+			<!-- <option value="10002">洗髓经</option> -->
+			<option value="10003">易筋经</option>
+			<option value="10014">紫霞功</option>
+			<option value="10015">太虚剑意</option>
+			<option value="10021">花间游</option>
+			<!-- <option value="10028">离经易道</option> -->
+			<option value="10026">傲血战意</option>
+			<!-- <option value="10062">铁牢律</option> -->
+			<!-- <option value="10080">云裳心经</option> -->
+			<option value="10081">冰心诀</option>
+			<option value="10144">问水诀</option>
+			<option value="10175">毒经</option>
+			<!-- <option value="10176">补天诀</option> -->
+		</select>
+	</div>
+
+
+	<div id="requirement-wrapper">
+		<h4>达标属性</h4>
+		<p>有未达标属性的配装将被排除，空白为无要求。</p>
+
+		<p>以下数值为绝对数值。</p>
+
+		<label for="attack-req">面板攻击</label>
+		<input type="number" id="attack-req">
+
+		<label for="overcome-req">破防</label>
+		<input type="number" id="overcome-req">
+
+		<br />
+
+		<p>以下数值为百分比，32=32%，123.4=123.4%。</p>
+
+		<label for="hitPercent-req">命中</label>
+		<input type="number" id="hitPercent-req">
+
+		<label for="strainPercent-req">无双</label>
+		<input type="number" id="strainPercent-req">
+
+		<br />
+
+		<!-- 'critialPercent' is a typo in jx3box's JSON response, and we are keeping it -->
+		<label for="critialPercent-req">会心</label>
+		<input type="number" id="critialPercent-req">
+
+		<label for="criticalDamagePercent-req">会效</label>
+		<input type="number" id="criticalDamagePercent-req">
+
+		<br />
+
+		<label for="toughnessPercent-req">御劲</label>
+		<input type="number" id="toughnessPercent-req">
+
+		<label for="decriticalDamagePercent-req">化劲</label>
+		<input type="number" id="decriticalDamagePercent-req">
+	</div>
+
+	<div id="optimize-wrapper">
+		<h4>最大化属性</h4>
+
+		<p>自动尝试最大化选择的属性，不选择则只过滤达标属性。</p>
+
+		<input type="checkbox" id="attack-optim" value="attack">
+		<label for="attack-optim">面板攻击</label>
+
+		<input type="checkbox" id="hitPercent-optim" value="hitPercent">
+		<label for="hitPercent-optim">命中</label>
+
+		<input type="checkbox" id="strainPercent-optim" value="strainPercent">
+		<label for="strainPercent-optim">无双</label>
+
+		<!-- 'critialPercent' is a typo in jx3box's JSON response, and we are keeping it -->
+		<input type="checkbox" id="critialPercent-optim" value="critialPercent">
+		<label for="critialPercent-optim">会心</label>
+
+		<input type="checkbox" id="criticalDamagePercent-optim" value="criticalDamagePercent">
+		<label for="criticalDamagePercent-optim">会效</label>
+
+		<input type="checkbox" id="overcome-optim" value="overcome">
+		<label for="overcome-optim">破防</label>
+
+		<input type="checkbox" id="toughnessPercent-optim" value="toughnessPercent">
+		<label for="toughnessPercent-optim">御劲</label>
+
+		<input type="checkbox" id="decriticalDamagePercent-optim" value="decriticalDamagePercent">
+		<label for="decriticalDamagePercent-optim">化劲</label>
+	</div>
+
+	<div id="button-wrapper">
+		<button type="button" onclick="search()">搜索</button>
+		<button type="button" onclick="reset()">重置</button>
+	</div>
+
+	<div id="results">
+	</div>
+	<img id="loader"
+		src="https://i2.hdslb.com/bfs/face/97d69e1d14b4acc359bd1721ed1738413114f08d.jpg@240w_240h_1c_1s.webp"></img>
+
+	<style>
+		body {
+			margin: auto;
+			max-width: 860px;
+		}
+
+		.result-pz-div {
+			box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
+			padding: 16px 16px 16px 16px;
+			margin-top: 16px;
+			margin-bottom: 16px;
+		}
+
+		.result-pz-div:hover {
+			box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+		}
+
+		.result-pz-div p {
+			margin: 0;
+		}
+
+		#button-wrapper {
+			margin-top: 24px;
+		}
+
+		#loader {
+			animation-duration: 2000ms;
+			animation-iteration-count: infinite;
+			animation-name: spin;
+			animation-timing-function: linear;
+			border-radius: 40px;
+			display: none;
+			height: 80;
+			margin-top: 16px;
+			width: 80px;
+		}
+
+		@keyframes spin {
+			from {
+				transform: rotate(0deg);
+			}
+
+			to {
+				transform: rotate(360deg);
+			}
+		}
+	</style>
+	<script src="./main.js"></script>
+
+</body>
+
+</html>
