@@ -32,6 +32,13 @@
 		</select>
 	</div>
 
+	<div id="weapon-wrapper">
+		<h4>武器</h4>
+		<p>若需要匹配武器，请填入武器全名，如：留情，长渊·大仪，空白为无要求。</p>
+		<label for="weapon-req"></label>
+		<input id="weapon-req">
+	</div>
+
 
 	<div id="requirement-wrapper">
 		<h4>达标属性</h4>
@@ -150,9 +157,15 @@
 			animation-timing-function: linear;
 			border-radius: 40px;
 			display: none;
-			height: 80;
+			height: 80px;
 			margin-top: 16px;
 			width: 80px;
+		}
+
+		.weapon-img {
+			height: 24px;
+			margin-left: 8px;
+			width: 24px;
 		}
 
 		@keyframes spin {

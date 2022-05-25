@@ -58,9 +58,15 @@ function getAttrFromPZ(pz, attr) {
 	return pz['overview']['attrs'][attr];
 }
 
+function meetsWeaponRequirement(pz, requirement) {
+	if (requirement == '') {
+		return true;
+	}
+	return pz['overview']['equips']['PRIMARY_WEAPON']['name'] === requirement;
+}
 
 // Returns true iff the input `pz` meets the input `requirement`.
-function meetsRequirement(pz, requirement) {
+function meetsAttrRequirement(pz, requirement) {
 	return Object.entries(requirement).every(
 		([attr, val]) => {
 			if (attr == 'score') {
@@ -89,8 +95,8 @@ function isParetoOptimal(pz, pzs, toOptimize) {
 // Find optimized PZs by filtering out PZs not meeting requirement, then find
 // Pareto optimality. At least I think I'm getting the Pareto frontier, if I'm
 // doing things correctly.
-function optimizedPZs(pzs, requirement, toOptimize) {
-	const filtered = pzs.filter((pz) => meetsRequirement(pz, requirement));
+function optimizedPZs(pzs, weaponRequirement, attrRequirement, toOptimize) {
+	const filtered = pzs.filter((pz) => meetsWeaponRequirement(pz, weaponRequirement) && meetsAttrRequirement(pz, attrRequirement));
 	if (toOptimize.length == 0) {
 		return filtered;
 	}
@@ -130,6 +136,15 @@ function pzDiv(pz) {
 	score.textContent = '装分：' + pz['overview']['score'];
 	div.appendChild(score);
 
+	const weapon = document.createElement('p');
+	const pzWeapon = pz['overview']['equips']['PRIMARY_WEAPON'];
+	const weaponImg = document.createElement('img');
+	weaponImg.src = 'https://icon.jx3box.com/origin_icon/' + pzWeapon['icon'] + '.png';
+	weaponImg.classList.add('weapon-img');
+	weapon.textContent = '武器：' + pzWeapon['level'] + '品 ' + pzWeapon['name'];
+	weapon.appendChild(weaponImg);
+	div.appendChild(weapon);
+
 	Object.entries(ATTR_MAP).forEach(([attr, displayName]) => {
 		const p = document.createElement('p');
 		p.textContent = `${displayName}: `;
@@ -161,7 +176,11 @@ function getMount() {
 	return document.getElementById('mount').value;
 }
 
-function getRequirement() {
+function getWeaponRequirement() {
+	return document.getElementById('weapon-req').value;
+}
+
+function getAttrRequirement() {
 	return Array.from(document.getElementById('requirement-wrapper').children)
 		.filter((elm) => elm.tagName == 'INPUT' && !!elm.value)
 		.map((elm) => [elm.id, elm.value])
@@ -185,7 +204,7 @@ function search() {
 	const mount = getMount();
 	fetchAllPZs(mount).then((allPZs) => {
 		PZ_CACHE[mount] = allPZs; // memoize
-		const optimized = optimizedPZs(allPZs, getRequirement(), getOptimize());
+		const optimized = optimizedPZs(allPZs, getWeaponRequirement(), getAttrRequirement(), getOptimize());
 		hideLoader();
 		renderResults(optimized);
 	});
